@@ -34,7 +34,9 @@
    return ok({static:true,settings:{},csrf:'static'});
   }catch(e){return new Response(JSON.stringify({error:e.message}),{status:404,headers:{'Content-Type':'application/json'}})}
  };
- // 설정 버튼은 보이되, 공개 사이트에서는 열지 않고 안내만 (2026-11-05)
- window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-route="settings"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();alert('설정은 PC 대시보드에서만 수정할 수 있어요.\n회사 PC에서 대시보드(127.0.0.1:8765)를 열어 설정해 주세요.')},true);
+ // 2026-11-26 공개 사이트에서는 설정 화면을 완전히 숨김: 버튼 숨김(static.css) + #/settings 주소로 들어오면 타임라인으로 돌림
+ function noSettings(){if(/^#\/settings/.test(location.hash))location.replace(location.href.replace(/#.*$/,'')+'#/timeline')}
+ noSettings();window.addEventListener('hashchange',noSettings,true);
+ window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-route="settings"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation()},true);
  document.addEventListener('DOMContentLoaded',async()=>{document.body.classList.add('static-site');try{const m=await json('meta.json');const b=document.createElement('div');b.className='static-badge';b.innerHTML='<span>읽기 전용</span><span>'+String(m.built_at).replace(/[<>&]/g,'')+' 업데이트</span>';document.querySelector('.sidebar-bottom')?.prepend(b)}catch(e){}});
 })();
