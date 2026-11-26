@@ -3,3 +3,6 @@
 
 /* 2026-11-10 17:35 GitHub 공개본에서만: '검색쿼리 히트맵' 메뉴 잠시 숨김 (PC 대시보드는 그대로) */
 .nav[data-route="heatmap"]{display:none!important}
+
+/* 2026-11-26 공개본에서 설정 메뉴 숨김 (PC 대시보드는 그대로) */
+[data-route="settings"],.v9-settings{display:none!important}
