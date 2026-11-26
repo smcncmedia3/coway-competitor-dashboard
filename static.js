@@ -36,7 +36,8 @@
  };
  // 2026-11-26 공개 사이트에서는 설정 화면을 완전히 숨김: 버튼 숨김(static.css) + #/settings 주소로 들어오면 타임라인으로 돌림
  function noSettings(){if(/^#\/settings/.test(location.hash))location.replace(location.href.replace(/#.*$/,'')+'#/timeline')}
- noSettings();window.addEventListener('hashchange',noSettings,true);
+ const blockSettings=e=>{if(/^#\/settings/.test(location.hash)){e.stopImmediatePropagation();noSettings()}};
+ noSettings();window.addEventListener('popstate',blockSettings,true);window.addEventListener('hashchange',blockSettings,true);
  window.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-route="settings"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation()},true);
  document.addEventListener('DOMContentLoaded',async()=>{document.body.classList.add('static-site');try{const m=await json('meta.json');const b=document.createElement('div');b.className='static-badge';b.innerHTML='<span>읽기 전용</span><span>'+String(m.built_at).replace(/[<>&]/g,'')+' 업데이트</span>';document.querySelector('.sidebar-bottom')?.prepend(b)}catch(e){}});
 })();
